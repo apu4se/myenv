@@ -1,6 +1,39 @@
 # ==============================
+# Autoloadings
+# ==============================
+autoload -Uz add-zsh-hook
+autoload -Uz compinit && compinit -u
+autoload -Uz url-quote-magic
+autoload -Uz vcs_info
+
+# ==============================
 # General settings
 # ==============================
+setopt auto_cd
+setopt auto_list
+setopt auto_menu
+setopt auto_pushd
+setopt extended_history
+setopt hist_ignore_all_dups
+setopt hist_ignore_dups
+setopt hist_reduce_blanks
+setopt hist_save_no_dups
+setopt hist_verify
+setopt ignore_eof
+setopt inc_append_history
+setopt interactive_comments
+setopt no_beep
+setopt no_hist_beep
+setopt no_list_beep
+setopt magic_equal_subst
+setopt notify
+setopt print_eight_bit
+setopt print_exit_value
+setopt prompt_subst
+setopt pushd_ignore_dups
+setopt rm_star_wait
+setopt share_history
+setopt transient_rprompt
 setopt correct
 
 # ==============================
@@ -50,13 +83,18 @@ alias vi='vim'
 alias less='less -NM'
 alias ..='cd ../'
 alias ...='cd ../../'
-alias open="cmd.exe /c start"
+
+# ==============================
+# WSL settings
+# ==============================
+if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
+    alias open="cmd.exe /c start"
+fi
 
 # ==============================
 # Pyenv settings
 # ==============================
 if [ -e $HOME/.pyenv ] ; then
-    echo "pyenv loaded"
     export PYENV_ROOT=$HOME/.pyenv
     export PATH=$PYENV_ROOT/bin:$PATH
     eval "$(pyenv init -)"
@@ -66,5 +104,5 @@ fi
 # ==============================
 # Load Message
 # ==============================
-echo "~/.zsh loaded"
+echo "~/.zshrc loaded"
 
