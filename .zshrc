@@ -49,7 +49,7 @@ export SAVEHIST=10000
 export LANG=en_US.UTF-8
 export LANGUAGE=en
 export SCREENDIR=$HOME/.screen
-export PROMPT=$'\n%F{red}[%w (%T)]%F{white} %F{green}%~%F{white}\n%F{cyan}❯❯❯%F{white} '
+export PROMPT=$'\n%F{red}(%T)[%n@%m]%F{white} %F{green}%~%F{white}\n%F{cyan}❯❯❯%F{white} '
 export TERM=xterm-256color
 
 # ==============================
