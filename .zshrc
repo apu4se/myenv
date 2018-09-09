@@ -55,10 +55,13 @@ alias open="cmd.exe /c start"
 # ==============================
 # Pyenv settings
 # ==============================
-export PYENV_ROOT=$HOME/.pyenv
-export PATH=$PYENV_ROOT/bin:$PATH
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+if [ -e $HOME/.pyenv ] ; then
+    echo "pyenv loaded"
+    export PYENV_ROOT=$HOME/.pyenv
+    export PATH=$PYENV_ROOT/bin:$PATH
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+fi
 
 # ==============================
 # Load Message
