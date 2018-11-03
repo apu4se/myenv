@@ -14,10 +14,7 @@ setopt auto_list
 setopt auto_menu
 setopt auto_pushd
 setopt extended_history
-setopt hist_ignore_all_dups
-setopt hist_ignore_dups
 setopt hist_reduce_blanks
-setopt hist_save_no_dups
 setopt hist_verify
 setopt ignore_eof
 setopt inc_append_history
@@ -34,7 +31,6 @@ setopt pushd_ignore_dups
 setopt rm_star_wait
 setopt share_history
 setopt transient_rprompt
-setopt correct
 
 # ==============================
 # Exports
@@ -51,6 +47,8 @@ export LANGUAGE=en
 export SCREENDIR=$HOME/.screen
 export PROMPT=$'\n%F{red}(%T)[%n@%m]%F{white} %F{green}%~%F{white}\n%F{cyan}❯❯❯%F{white} '
 export TERM=xterm-256color
+export DISPLAY=:0.0
+export LIBGL_ALWAYS_INDIRECT=1
 
 # ==============================
 # Completion
@@ -67,14 +65,18 @@ zstyle ':completion:*:options' description 'yes'
 # ==============================
 # Key bindings
 # ==============================
-bindkey -v
+bindkey -e
+bindkey "^P" history-beginning-search-backward
+bindkey "^N" history-beginning-search-forward
 
 # ==============================
 # Aliases
 # ==============================
+alias c='cd'
 alias ls='ls -F --color'
+alias l='ls -A'
 alias ll='ls -l -h'
-alias la='ls -A'
+alias la='ll -A'
 alias rm='rm -i'
 alias cp='cp -i'
 alias rm='rm -i'
@@ -88,6 +90,7 @@ alias ...='cd ../../'
 # WSL settings
 # ==============================
 if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
+    export PROMPT=$'\n%F{red}[%w (%T)]%F{white} %F{green}%~%F{white}\n%F{cyan}>>>%F{white} '
     alias open="cmd.exe /c start"
 fi
 
