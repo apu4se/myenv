@@ -39,16 +39,18 @@ export CLICOLOR=true
 export LSCOLORS='exfxcxdxbxGxDxabagacad'
 export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=36;01:cd=33;01:su=31;40;07:sg=36;40;07:tw=32;40;07:ow=33;40;07:'
 export EDITOR=vim
-export HISTFILE=~/.zhistory
+export HISTFILE=$HOME/.zhistory
 export HISTSIZE=10000
 export SAVEHIST=10000
 export LANG=en_US.UTF-8
 export LANGUAGE=en
 export SCREENDIR=$HOME/.screen
-export PROMPT=$'\n%F{red}(%T)[%n@%m]%F{white} %F{green}%~%F{white}\n%F{cyan}❯❯❯%F{white} '
+export PROMPT=$'\n%F{red}(%T)[%n@%m]%F{white} %F{green}%~%F{white}\n%F{cyan}i>>>%F{white} '
 export TERM=xterm-256color
 export DISPLAY=:0.0
 export LIBGL_ALWAYS_INDIRECT=1
+export PATH='/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin':"$PATH"
+export PATH=$HOME/local/bin:$PATH
 
 # ==============================
 # Completion
@@ -73,6 +75,8 @@ bindkey "^N" history-beginning-search-forward
 # Aliases
 # ==============================
 alias c='cd'
+alias po='popd'
+alias pu='pushd'
 alias ls='ls -F --color'
 alias l='ls -A'
 alias ll='ls -l -h'
@@ -85,6 +89,9 @@ alias vi='vim'
 alias less='less -NM'
 alias ..='cd ../'
 alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+alias pvenv='source pvenv'
 
 # ==============================
 # WSL settings
@@ -92,20 +99,37 @@ alias ...='cd ../../'
 if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
     export PROMPT=$'\n%F{red}[%w (%T)]%F{white} %F{green}%~%F{white}\n%F{cyan}>>>%F{white} '
     alias open="cmd.exe /c start"
-fi
+    alias dotnet="cmd.exe /c dotnet"
+    alias remoted='(cd /mnt/c/Windows/System32/ && open mstsc.exe)'
+    vscode(){
+        /mnt/c/Users/admin/AppData/Local/Programs/Microsoft\ VS\ Code/Code.exe $1 &
+    }
+    alias vsc="vscode"
 
-# ==============================
-# Pyenv settings
-# ==============================
-if [ -e $HOME/.pyenv ] ; then
-    export PYENV_ROOT=$HOME/.pyenv
-    export PATH=$PYENV_ROOT/bin:$PATH
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
+    vs(){
+        "/mnt/c/Program Files (x86)/Microsoft Visual Studio/2017/Community/Common7/IDE/devenv.exe" $1 &
+    }
+
+    rider(){
+        "/mnt/c/Program Files/JetBrains/JetBrains Rider 2018.3.4/bin/rider64.exe" $1 &
+    }
+    alias ri="rider"
+
+    if [ -f "./.venv/bin/activate" ]
+    then
+    . .venv/bin/activate
+    elif [ -f "./venv/bin/activate" ]
+    then
+    . venv/bin/activate
+    elif [ -f "$HOME/.mygvenv/bin/activate" ]
+    then
+    . $HOME/.mygvenv/bin/activate
+    fi
 fi
 
 # ==============================
 # Load Message
 # ==============================
+# cd $HOME
 echo "~/.zshrc loaded"
 
