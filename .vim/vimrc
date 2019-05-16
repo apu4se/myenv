@@ -1,0 +1,113 @@
+" ==============================
+" General settings
+" ==============================
+set encoding=utf-8
+scriptencoding utf-8
+filetype plugin indent on
+syntax on
+highlight Normal ctermbg=none
+set nowrap
+set hlsearch
+set ignorecase
+set smartcase
+set autoindent
+set ruler
+set number  "行番号の表示
+set list  "行末に $ を表示
+set wildmenu  "コマンドの補完
+set showcmd
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+set expandtab
+set smarttab
+set backspace=indent,eol,start  "バックスペースの有効化
+set clipboard=unnamed  "クリップボードの設定
+set visualbell t_vb=  "ビープ音の設定
+set history=5000  "コマンド履歴の件数
+set fileencoding=utf-8  "保存時の文字コード
+set fileencodings=ucs-boms,utf-8,euc-jp,cp932  "読み込み時の文字コードの自動判別. 左側優先
+set fileformats=unix,dos,mac  "改行コードの自動判別. 左側優先
+set ambiwidth=double  "□や○の文字が崩れる問題を解決
+
+" ==============================
+" autocmd
+" ==============================
+autocmd BufRead,BufNewFile     *.rwi  set filetype=rwi
+autocmd BufNewFile,BufReadPost *.md   set filetype=markdown
+autocmd BufNewFile,BufReadPost *.snip set filetype=snippet
+" sw = softtabstop
+" sts= shiftwidth
+" ts = tabstop
+autocmd FileType python      setlocal sw=4 sts=4 ts=4
+autocmd FileType python      :set dictionary=$HOME/.vim/dict/default.dict,$HOME/.vim/dict/python.dict
+autocmd FileType cs          setlocal sw=4 sts=4 ts=4
+autocmd FileType cs          :set dictionary=$HOME/.vim/dict/default.dict,$HOME/.vim/dict/cs.dict,$HOME/.vim/dict/unity.dict
+autocmd FileType snippet     setlocal sw=2 sts=2 ts=2
+autocmd BufRead,BufNewFile *.txt set wrap
+
+" ==============================
+" Color Scheme
+" ==============================
+if filereadable(expand('~/.vim/colors/molokai.vim'))
+    colorscheme molokai
+endif
+
+" ==============================
+" Cursor Setting
+" ==============================
+if has('vim_starting')
+    " 挿入モード時に非点滅の縦棒タイプのカーソル
+    let &t_SI .= "\e[6 q"
+    " ノーマルモード時に非点滅のブロックタイプのカーソル
+    let &t_EI .= "\e[2 q"
+    " 置換モード時に非点滅の下線タイプのカーソル
+    let &t_SR .= "\e[4 q"
+endif
+
+" ==============================
+" Cursorline Setting
+" ==============================
+augroup vimrc-auto-cursorline
+  autocmd!
+  autocmd CursorMoved,CursorMovedI * call s:auto_cursorline('CursorMoved')
+  autocmd CursorHold,CursorHoldI * call s:auto_cursorline('CursorHold')
+  autocmd WinEnter * call s:auto_cursorline('WinEnter')
+  autocmd WinLeave * call s:auto_cursorline('WinLeave')
+
+  let s:cursorline_lock = 0
+  function! s:auto_cursorline(event)
+    if a:event ==# 'WinEnter'
+      setlocal cursorline
+      let s:cursorline_lock = 2
+    elseif a:event ==# 'WinLeave'
+      setlocal nocursorline
+    elseif a:event ==# 'CursorMoved'
+      if s:cursorline_lock
+        if 1 < s:cursorline_lock
+          let s:cursorline_lock = 1
+        else
+          setlocal nocursorline
+          let s:cursorline_lock = 0
+        endif
+      endif
+    elseif a:event ==# 'CursorHold'
+      setlocal cursorline
+      let s:cursorline_lock = 1
+    endif
+  endfunction
+augroup END
+
+" ==============================
+" KeyMap
+" ==============================
+autocmd BufNewFile,BufRead *.py nnoremap <C-e> :<C-u>!python %
+autocmd BufNewFile,BufRead *.cpp nnoremap <C-e> :<C-u>!g++ % -o execute_cpp && ./execute_cpp && rm -f ./execute_cpp
+autocmd BufNewFile,BufRead *.go nnoremap <C-e> :<C-u>!go run %
+autocmd BufNewFile,BufRead *.cs nnoremap <C-e> :<C-u>!dotnet run
+autocmd BufNewFile,BufRead *.txt nnoremap j gj
+autocmd BufNewFile,BufRead *.txt nnoremap k gk
+autocmd BufNewFile,BufRead *.txt vnoremap j gj
+autocmd BufNewFile,BufRead *.txt vnoremap k gk
+nnoremap Y y$
+

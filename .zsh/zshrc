@@ -1,0 +1,144 @@
+# ==============================
+# Autoloadings
+# ==============================
+autoload -Uz add-zsh-hook
+autoload -Uz compinit && compinit -u
+autoload -Uz url-quote-magic
+autoload -Uz vcs_info
+
+# ==============================
+# General settings
+# ==============================
+setopt auto_cd
+setopt auto_list
+setopt auto_menu
+setopt auto_pushd
+setopt extended_history
+setopt hist_reduce_blanks
+setopt hist_verify
+setopt ignore_eof
+setopt inc_append_history
+setopt interactive_comments
+setopt no_beep
+setopt no_hist_beep
+setopt no_list_beep
+setopt magic_equal_subst
+setopt notify
+setopt print_eight_bit
+setopt print_exit_value
+setopt prompt_subst
+setopt pushd_ignore_dups
+setopt rm_star_wait
+setopt share_history
+setopt transient_rprompt
+
+# ==============================
+# Exports
+# ==============================
+export CLICOLOR=true
+export LSCOLORS='exfxcxdxbxGxDxabagacad'
+export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=36;01:cd=33;01:su=31;40;07:sg=36;40;07:tw=32;40;07:ow=33;40;07:'
+export EDITOR=vim
+export HISTFILE=$HOME/.zhistory
+export HISTSIZE=10000
+export SAVEHIST=10000
+export LANG=en_US.UTF-8
+export LANGUAGE=en
+export SCREENDIR=$HOME/.screen
+export PROMPT=$'\n%F{red}(%T)[%n@%m]%F{white} %F{green}%~%F{white}\n%F{blue}>>>%F{white} '
+export TERM=xterm-256color
+
+# ==============================
+# Completion
+# ==============================
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' use-cache true
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*:default' menu select=2
+zstyle ':completion:*:options' description 'yes'
+
+# ==============================
+# Key bindings
+# ==============================
+bindkey -e
+bindkey "^P" history-beginning-search-backward
+bindkey "^N" history-beginning-search-forward
+
+# ==============================
+# Aliases
+# ==============================
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+alias c='cd'
+alias po='popd'
+alias pu='pushd'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias rm='rm -i'
+alias cp='cp -i'
+alias rm='rm -i'
+alias mv='mv -i'
+alias vi='vim'
+alias less='less -NM'
+alias ..='cd ../'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+
+# ==============================
+# Linux Brew
+# ==============================
+if [ -e "$HOME/.linuxbrew/bin/brew" ]; then
+    eval $($HOME/.linuxbrew/bin/brew shellenv)
+fi
+
+# ==============================
+# man 
+# ==============================
+# man を色付きにする
+man() {
+    env LESS_TERMCAP_mb=$'\E[01;31m' \
+    LESS_TERMCAP_md=$'\E[01;38;5;74m' \
+    LESS_TERMCAP_me=$'\E[0m' \
+    LESS_TERMCAP_se=$'\E[0m' \
+    LESS_TERMCAP_so=$'\E[38;5;246m' \
+    LESS_TERMCAP_ue=$'\E[0m' \
+    LESS_TERMCAP_us=$'\E[04;38;5;146m' \
+    man "$@"
+}
+
+# ==============================
+# pyenv
+# =============================
+if type "pyenv" > /dev/null 2>&1; then
+    eval "$(pyenv init -)"
+fi
+if type "pyenv-virtualenv" > /dev/null 2>&1; then
+    eval "$(pyenv virtualenv-init -)"
+fi
+
+# =============================
+# golang
+# =============================
+if type "go" > /dev/null 2>&1; then
+    export GOPATH=$HOME/.golang
+    export PATH=$PATH:$GOPATH/bin
+fi    
+
+# =============================
+# mozc
+# =============================
+export DefaultImModule=fcitx
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS="@im=fcitx"
+
